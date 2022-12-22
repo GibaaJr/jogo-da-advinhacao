@@ -1,16 +1,25 @@
-const randomNumber = Math.round(Math.random() * 10);
+let randomNumber = Math.round(Math.random() * 10);
 let attempts = 1;
-console.log(randomNumber)
+const screen1 = document.querySelector(".screen1");
+const screen2 = document.querySelector(".screen2")
+const btnTry = document.querySelector("#btnTry")
+const btnReset = document.querySelector("#btnReset")
+
+//eventos
+
+btnTry.addEventListener('click', handleTryClick)
+btnReset.addEventListener('click', handleResetClick)
+document.addEventListener('keydown', enterKey)
 
 
-function handleClick(event) {
+// funções
+function handleTryClick(event) {
     event.preventDefault()
 
     const inputNumber = document.querySelector("#inputNumber")
 
     if(Number(inputNumber.value) == randomNumber) {
-        document.querySelector(".screen1").classList.add("hide")
-        document.querySelector(".screen2").classList.remove("hide")
+        toggleScreen()
         if (attempts == 1) {
 
             document.querySelector(".screen2 h2").innerText = `Você acertou em ${attempts} tentativa!`
@@ -20,10 +29,24 @@ function handleClick(event) {
         }
     }
 
+    inputNumber.value = "";
+
     attempts++
 }
 
-//eventos
+function handleResetClick() {
+    toggleScreen()
+    attempts = 1
+    randomNumber = Math.round(Math.random() * 10);
+}
 
-btnTry = document.querySelector("#btnTry")
-btnReset = document.querySelector("#btnReset")
+function toggleScreen() {
+    screen1.classList.toggle("hide")
+    screen2.classList.toggle("hide")
+}
+
+function enterKey(e) {
+    if (e.key == 'Enter' && screen1.classList.contains('hide')){
+        handleResetClick()
+    }
+}
